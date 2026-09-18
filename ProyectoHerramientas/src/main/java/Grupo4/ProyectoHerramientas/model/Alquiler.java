@@ -7,6 +7,8 @@ import java.util.List;
 
 import jakarta.persistence.*;
 
+/*Archivo Verificado Correctamente*/
+
 @Entity
 @Table(name = "alquileres")
 public class Alquiler {

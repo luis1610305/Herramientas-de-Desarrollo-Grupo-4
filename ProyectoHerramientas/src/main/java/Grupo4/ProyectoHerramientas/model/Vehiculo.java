@@ -11,6 +11,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+/*Archivo Verificado Correctamente*/
+
 @Entity
 @Table(name = "vehiculos")
 public class Vehiculo {
