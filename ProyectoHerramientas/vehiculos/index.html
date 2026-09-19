@@ -89,7 +89,7 @@
                         <ul class="list-unstyled">
                             <!-- Nota: La placa es un dato sensible/técnico, si prefieres que el cliente tampoco la vea en la tarjeta, puedes envolver este <li> en un sec:authorize="hasRole('ADMIN')" -->
                             <li sec:authorize="hasRole('ADMIN')"><strong>Placa:</strong> <span class="text-monospace fw-bold" th:text="${v.placa}"></span></li>
-                            <li><strong>Color:</strong> <span th:text="${v.color}"></span></li>
+                            <li><strong>Color del auto:</strong> <span th:text="${v.color}"></span></li>
                             <li><strong>Kilometraje:</strong> <span th:text="${#numbers.formatInteger(v.kilometraje, 1, 'POINT')}">0</span> Km</li>
                             <li><strong>Precio por día:</strong> S/<span th:text="${#numbers.formatDecimal(v.precioPorDia, 1, 2)}"></span></li>
                         </ul>
