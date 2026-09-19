@@ -37,7 +37,7 @@
                         <span class="fw-bold" th:text="${vehiculo.color}">Gris</span>
                     </div>
                     <div class="col-6 mb-3">
-                        <small class="text-uppercase text-muted d-block">Kilometraje</small>
+                        <small class="text-uppercase text-muted d-block fw-semibold">Kilometraje</small>
                         <span class="fw-bold"
                             th:text="${#numbers.formatInteger(vehiculo.kilometraje, 1, 'POINT') + ' km'}">0 km</span>
                     </div>
