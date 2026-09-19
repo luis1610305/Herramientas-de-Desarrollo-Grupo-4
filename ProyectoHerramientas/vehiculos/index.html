@@ -8,7 +8,7 @@
             </a>
         </div>
 
-        <!-- 1. BLOQUE DE BÚSQUEDA PARA ADMINISTRADORES -->
+        <!-- 1. PANEL DE BÚSQUEDA Y FILTRO PARA ADMINISTRADORES -->
         <div sec:authorize="hasRole('ADMIN')" class="card bg-light mb-4 shadow-sm">
             <div class="card-body">
                 <form th:action="@{/vehiculos}" method="get" class="row g-3 align-items-end">
