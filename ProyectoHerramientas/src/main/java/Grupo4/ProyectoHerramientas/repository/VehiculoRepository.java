@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import Grupo4.ProyectoHerramientas.model.Vehiculo;
 
-
+/*Archivo revisado correctamente */
 
 public interface VehiculoRepository extends JpaRepository<Vehiculo, Long> {
     Optional<Vehiculo> findByPlaca(String placa);
