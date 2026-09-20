@@ -1,0 +1,135 @@
+<html layout:decorate="~{layouts/main-layout}">
+    <head>
+        <title>Mis Autos</title>
+        
+        <!-- Este bloque se insertará automáticamente en el head del layout -->
+        <th:block layout:fragment="estilosVistas">
+            <link rel="stylesheet" th:href="@{/css/mis-autos.css}">
+        </th:block>
+    </head>
+    
+    <div>
+        <div layout:fragment="content" class="container mb-5 mt-4">
+            <div class="row mb-4">
+                <div class="col">
+                    <h2 class="fw-bold text-dark mb-1">Mis Vehículos Alquilados</h2>
+                    <p class="text-muted">Monitorea el estado actual de tus unidades, fechas de entrega y descarga tus
+                        contratos.</p>
+                </div>
+            </div>
+        
+            <!-- Alerta en caso de no tener alquileres -->
+            <div class="alert alert-info border-0 p-4 shadow-sm rounded-4 text-center"
+                th:if="${#lists.isEmpty(alquileres)}">
+                <i class="bi bi-info-circle-fill fs-1 d-block mb-2 text-info"></i>
+                <h5 class="fw-bold">Actualmente no cuentas con vehículos en alquiler</h5>
+                <p class="mb-0 text-muted">¿Buscas realizar un viaje? Explora nuestra flota disponible en el catálogo
+                    principal.</p>
+            </div>
+        
+            <!-- Grid de Alquileres Activos -->
+            <div class="row g-4" th:unless="${#lists.isEmpty(alquileres)}">
+                <div class="col-xl-12" th:each="alq : ${alquileres}">
+                    <div class="card card-vehiculo shadow-sm position-relative bg-white">
+        
+                        <!-- Estado del Alquiler -->
+                        <span class="badge badge-status p-2 text-uppercase"
+                            th:classappend="${alq.estadoOperativo == 'NO_DEVUELTO' ? 'bg-success' : 'bg-secondary'}"
+                            th:text="Activo"></span>
+        
+                        <div class="row g-0">
+                            <!-- Columna de la Imagen del Vehículo -->
+                            <div class="col-lg-4 img-container">
+                                <img th:src="${alq.vehiculo.imagenUrl != null ? alq.vehiculo.imagenUrl : '/images/default-car.png'}"
+                                    th:alt="${alq.vehiculo.marca + ' ' + alq.vehiculo.modelo}" class="img-vehiculo">
+                            </div>
+        
+                            <!-- Columna de los Detalles del Alquiler -->
+                            <div class="col-lg-8">
+                                <div class="card-body p-4 d-flex flex-column h-100 justify-content-between">
+        
+                                    <!-- Información del Auto -->
+                                    <div>
+                                        <div class="info-header pb-3 mb-3">
+                                            <span class="text-primary text-uppercase fw-bold small d-block mb-1">Vehículo
+                                                Asignado</span>
+                                            <h3 class="card-title fw-bold text-dark mb-1"
+                                                th:text="${alq.vehiculo.marca + ' ' + alq.vehiculo.modelo + ' ' + alq.vehiculo.anio}">
+                                            </h3>
+                                            <div class="d-flex gap-2 align-items-center mt-2">
+                                                <span class="badge bg-dark px-3 py-2 fs-6"
+                                                    th:text="${'Placa: ' + alq.vehiculo.placa}"></span>
+                                                <span class="text-muted small"><i class="bi bi-speedometer2 me-1"></i> <span
+                                                        th:text="${alq.vehiculo.kilometraje + ' km'}"></span></span>
+                                            </div>
+                                        </div>
+        
+                                        <!-- Fechas e Indicadores de Tiempo -->
+                                        <h6 class="fw-bold text-secondary mb-3"><i class="bi bi-calendar3 me-2"></i>
+                                            Cronograma del Alquiler</h6>
+        
+                                        <div class="row g-3 text-center mb-4">
+                                            <div class="col-4 border-end">
+                                                <small class="text-muted d-block text-uppercase fw-semibold"
+                                                    style="font-size: 0.75rem;">F. Registro</small>
+                                                <span class="fw-bold text-dark"
+                                                    th:text="${#temporals.format(alq.fechaContrato, 'dd/MM/yyyy')}"></span>
+                                            </div>
+                                            <div class="col-4 border-end">
+                                                <small class="text-success d-block text-uppercase fw-semibold"
+                                                    style="font-size: 0.75rem;">Recojo</small>
+                                                <span class="fw-bold text-success"
+                                                    th:text="${#temporals.format(alq.fechaRecojo, 'dd/MM/yyyy')}"></span>
+                                            </div>
+                                            <div class="col-4">
+                                                <small class="text-danger d-block text-uppercase fw-semibold"
+                                                    style="font-size: 0.75rem;">Devolución</small>
+                                                <span class="fw-bold text-danger"
+                                                    th:text="${#temporals.format(alq.fechaDevolucion, 'dd/MM/yyyy')}"></span>
+                                            </div>
+                                        </div>
+        
+                                        <!-- Cálculo de Días Totales -->
+                                        <div
+                                            class="p-3 bg-light rounded-3 mb-4 d-flex justify-content-between align-items-center">
+                                            <div class="d-flex align-items-center gap-2">
+                                                <i class="bi bi-clock-history text-primary fs-4"></i>
+                                                <span class="text-muted">Tiempo Total del Servicio:</span>
+                                            </div>
+                                            <span class="fs-5 fw-bold text-dark"
+                                                th:text="${chronoUnit.between(alq.fechaRecojo, alq.fechaDevolucion) + ' días'}">
+                                                5 días
+                                            </span>
+                                        </div>
+                                    </div>
+        
+                                    <!-- Acciones del Contrato -->
+                                    <div class="mt-auto border-top pt-3">
+                                        <div class="row g-2">
+                                            <div class="col-md-6">
+                                                <a th:href="@{/alquileres/contrato/pdf(alquilerId=${alq.id})}"
+                                                    target="_blank"
+                                                    class="btn btn-outline-primary w-100 fw-bold rounded-pill">
+                                                    <i class="bi bi-file-earmark-pdf-fill me-1"></i> Descargar Contrato
+                                                </a>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <a th:href="@{/vehiculos}" class="btn btn-dark w-100 fw-bold rounded-pill">
+                                                    Volver al inicio
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+        
+                                </div>
+                            </div>
+                        </div>
+        
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+    </div>
+
+</html>
