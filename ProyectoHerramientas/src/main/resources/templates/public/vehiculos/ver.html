@@ -135,26 +135,32 @@
 </div>
 
 <script th:inline="javascript">
-    // Almacenamos de forma segura el ID del vehículo usando Thymeleaf en JS
+    //Resuelve el error de referencia en oninput
+    function actualizarEnlaceAlquiler() {
+        const input = document.getElementById('inputDias');
+        const diasSeleccionados = parseInt(input.value);
+        const vehiculoId = input.getAttribute('data-id');
+        const btnContinuar = document.getElementById('btnContinuar');
+
+        if (!isNaN(diasSeleccionados) && diasSeleccionados >= 1) {
+            btnContinuar.href = `/alquileres/nuevo?vehiculoId=${vehiculoId}&dias=${diasSeleccionados}`;
+        }
+    }
+
     function validarYAbrirModal() {
         const input = document.getElementById('inputDias');
         const diasSeleccionados = parseInt(input.value);
-
-        // LEEMOS EL ID DESDE EL ATRIBUTO DATA-ID DEL INPUT
         const vehiculoId = input.getAttribute('data-id');
 
-        // VALIDACIÓN: Si está vacío, es menor a 1 o no es un número
         if (isNaN(diasSeleccionados) || diasSeleccionados < 1) {
             alert("Por favor, ingrese una cantidad de días válida (mínimo 1 día).");
-            input.focus(); // Coloca el cursor en el campo del error
-            return; // Detiene la ejecución para que NO se abra el modal
+            input.focus();
+            return;
         }
 
-        // Si pasó la validación, actualizamos la URL final del contrato
-        const btnContinuar = document.getElementById('btnContinuar');
-        btnContinuar.href = `/alquileres/nuevo?vehiculoId=${vehiculoId}&dias=${diasSeleccionados}`;
+        // Llamamos a la función recién creada
+        actualizarEnlaceAlquiler();
 
-        // Abrimos el modal manualmente usando la API de Bootstrap
         const modalTerminos = new bootstrap.Modal(document.getElementById('modalTerminos'));
         modalTerminos.show();
     }
